@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I'm Sorry... I Love You</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            overflow: hidden;
+            font-family: 'Georgia', serif;
+            height: 100vh;
+            position: relative;
+        }
+
+        .rain-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .rain-drop {
+            position: absolute;
+            background: linear-gradient(transparent, rgba(255,255,255,0.6), transparent);
+            width: 2px;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        .lightning {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            animation: lightning-flash 8s infinite;
+            z-index: 2;
+        }
+
+        @keyframes lightning-flash {
+            0%, 90%, 100% { opacity: 0; }
+            91%, 93% { opacity: 0.8; }
+            92% { opacity: 0.2; }
+        }
+
+        .content {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 50px;
+            max-width: 600px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 3rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 255, 255, 0.3); }
+            to { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.3); }
+        }
+
+        .message {
+            color: #e0e0e0;
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            animation: slideUp 2.5s ease-out 0.5s both;
+        }
+
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .heart {
+            color: #ff6b6b;
+            font-size: 2rem;
+            animation: heartbeat 2s ease-in-out infinite;
+            margin: 20px 0;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .apology-text {
+            color: #ffb3b3;
+            font-style: italic;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            animation: slideUp 3s ease-out 1s both;
+        }
+
+        .clouds {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(ellipse at 20% 50%, rgba(120, 120, 120, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(120, 120, 120, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 80%, rgba(120, 120, 120, 0.1) 0%, transparent 50%);
+            z-index: 0;
+            animation: drift 20s ease-in-out infinite;
+        }
+
+        @keyframes drift {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+
+        @media (max-width: 768px) {
+            .glass-card {
+                padding: 30px 20px;
+                margin: 20px;
+                max-width: 90%;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .message {
+                font-size: 1.1rem;
+                line-height: 1.6;
+            }
+            
+            .apology-text {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .glass-card {
+                padding: 25px 15px;
+                margin: 15px;
+                max-width: 95%;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+                margin-bottom: 20px;
+            }
+            
+            .message {
+                font-size: 1rem;
+                line-height: 1.5;
+                margin-bottom: 20px;
+            }
+            
+            .heart {
+                font-size: 1.5rem;
+                margin: 15px 0;
+            }
+            
+            .apology-text {
+                font-size: 0.95rem;
+                margin-top: 15px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .content {
+                padding: 10px;
+            }
+            
+            .glass-card {
+                padding: 20px 12px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 1.6rem;
+            }
+            
+            .message {
+                font-size: 0.9rem;
+            }
+            
+            .apology-text {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="clouds"></div>
+    <div class="lightning"></div>
+    <div class="rain-container" id="rainContainer"></div>
+    
+    <div class="content">
+        <div class="glass-card">
+            <h1>I'm Sorry...</h1>
+            <div class="message">
+                I know I was rude and I hurt you.<br>
+                That was never my intention.<br>
+                Maybe my words came out wrong, 
+                but my heart is right when chosing u.
+            </div>
+            <div class="heart">♥</div>
+            <div class="message">
+                <strong>I love you</strong><br>
+                More than the rain loves the earth<br>
+                More than the lightning loves the storm<br>
+                More than words can ever express
+            </div>
+            <div class="apology-text">
+                ma petite fille adoree<br>
+                I want to be with you, always.<br>
+                Let me make this right.
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone.js/14.8.49/Tone.js"></script>
+    <script>
+        let synth;
+        let currentSong = null;
+
+        // Initialize audio and start playing automatically
+        async function initAudioAndPlay() {
+            try {
+                // Initialize Tone.js
+                await Tone.start();
+                
+                // Create a piano-like synthesizer
+                synth = new Tone.PolySynth(Tone.Synth, {
+                    oscillator: {
+                        type: "triangle"
+                    },
+                    envelope: {
+                        attack: 0.1,
+                        decay: 0.3,
+                        sustain: 0.5,
+                        release: 2
+                    }
+                }).toDestination();
+
+                // Add reverb for atmospheric effect
+                const reverb = new Tone.Reverb({
+                    decay: 4,
+                    wet: 0.3
+                }).toDestination();
+                
+                synth.connect(reverb);
+
+                // Start playing the melody
+                playMelody();
+            } catch (error) {
+                console.log('Audio autoplay blocked, will play on first user interaction');
+            }
+        }
+
+        // Sad piano melody
+        const sadMelody = [
+            { note: "C4", duration: "2n", time: 0 },
+            { note: "G3", duration: "4n", time: "0:2" },
+            { note: "A3", duration: "2n", time: "0:3" },
+            { note: "F3", duration: "4n", time: "1:1" },
+            { note: "G3", duration: "2n", time: "1:2" },
+            
+            { note: "E4", duration: "2n", time: "2:0" },
+            { note: "D4", duration: "4n", time: "2:2" },
+            { note: "C4", duration: "2n", time: "2:3" },
+            { note: "G3", duration: "4n", time: "3:1" },
+            { note: "A3", duration: "2n", time: "3:2" },
+            
+            { note: "F4", duration: "2n", time: "4:0" },
+            { note: "E4", duration: "4n", time: "4:2" },
+            { note: "D4", duration: "2n", time: "4:3" },
+            { note: "C4", duration: "4n", time: "5:1" },
+            { note: "B3", duration: "2n", time: "5:2" },
+            
+            { note: "A3", duration: "1n", time: "6:0" },
+            { note: "G3", duration: "2n", time: "7:0" },
+            { note: "F3", duration: "2n", time: "7:2" },
+            { note: "C4", duration: "1n", time: "8:0" }
+        ];
+
+        const bassLine = [
+            { note: "C2", duration: "1n", time: "0:0" },
+            { note: "A1", duration: "1n", time: "1:0" },
+            { note: "F2", duration: "1n", time: "2:0" },
+            { note: "G2", duration: "1n", time: "3:0" },
+            { note: "F2", duration: "1n", time: "4:0" },
+            { note: "G2", duration: "1n", time: "5:0" },
+            { note: "A1", duration: "1n", time: "6:0" },
+            { note: "C2", duration: "1n", time: "7:0" },
+            { note: "C2", duration: "1n", time: "8:0" }
+        ];
+
+        async function playMelody() {
+            if (!synth) await initAudioAndPlay();
+            
+            // Create melody part
+            const melodyPart = new Tone.Part((time, note) => {
+                synth.triggerAttackRelease(note.note, note.duration, time);
+            }, sadMelody).start(0);
+            
+            // Create bass part
+            const bassSynth = new Tone.Synth({
+                oscillator: { type: "sine" },
+                envelope: { attack: 0.1, decay: 0.2, sustain: 0.3, release: 1 }
+            }).toDestination();
+            bassSynth.volume.value = -20;
+            
+            const bassPart = new Tone.Part((time, note) => {
+                bassSynth.triggerAttackRelease(note.note, note.duration, time);
+            }, bassLine).start(0);
+            
+            // Set loop for continuous playing
+            melodyPart.loop = true;
+            melodyPart.loopEnd = "9:0";
+            bassPart.loop = true;
+            bassPart.loopEnd = "9:0";
+            
+            // Set slow, contemplative tempo
+            Tone.Transport.bpm.value = 50;
+            Tone.Transport.start();
+            
+            currentSong = { melody: melodyPart, bass: bassPart, bassSynth };
+        }
+
+        // Create rain drops
+        function createRain() {
+            const rainContainer = document.getElementById('rainContainer');
+            const numberOfDrops = 100;
+            
+            for (let i = 0; i < numberOfDrops; i++) {
+                const drop = document.createElement('div');
+                drop.className = 'rain-drop';
+                drop.style.left = Math.random() * 100 + '%';
+                drop.style.height = Math.random() * 100 + 50 + 'px';
+                drop.style.animationDuration = Math.random() * 2 + 1 + 's';
+                drop.style.animationDelay = Math.random() * 2 + 's';
+                rainContainer.appendChild(drop);
+            }
+        }
+
+        // Thunder sound effect simulation
+        function createThunder() {
+            const lightning = document.querySelector('.lightning');
+            setInterval(() => {
+                if (Math.random() < 0.1) { // 10% chance every interval
+                    lightning.style.animation = 'none';
+                    setTimeout(() => {
+                        lightning.style.animation = 'lightning-flash 8s infinite';
+                    }, 100);
+                }
+            }, 3000);
+        }
+
+        // Initialize effects and music
+        window.addEventListener('load', () => {
+            createRain();
+            createThunder();
+            initAudioAndPlay(); // Start music automatically
+        });
+
+        // Fallback: Start music on first user interaction if autoplay is blocked
+        document.addEventListener('click', () => {
+            if (!currentSong) {
+                initAudioAndPlay();
+            }
+        }, { once: true });
+
+        // Add some interactive elements
+        document.addEventListener('click', (e) => {
+            // Create a ripple effect on click
+            const ripple = document.createElement('div');
+            ripple.style.position = 'absolute';
+            ripple.style.borderRadius = '50%';
+            ripple.style.background = 'rgba(255, 255, 255, 0.3)';
+            ripple.style.transform = 'scale(0)';
+            ripple.style.animation = 'ripple 0.6s ease-out';
+            ripple.style.left = e.clientX - 25 + 'px';
+            ripple.style.top = e.clientY - 25 + 'px';
+            ripple.style.width = '50px';
+            ripple.style.height = '50px';
+            ripple.style.pointerEvents = 'none';
+            ripple.style.zIndex = '1000';
+            
+            document.body.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+
+        // Add ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
